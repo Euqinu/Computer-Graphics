@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <math.h>
+#include <GL/glut.h>
+
+double X1, Y1, X2, Y2;
+
+void Line_Bresenham(void){
+	 glClear(GL_COLOR_BUFFER_BIT);
+	glBegin(GL_LINES);	
+			glVertex2f(0,-300);
+			glVertex2f(0,500);
+			glVertex2f(-300,0);
+			glVertex2f(500,0);
+		glEnd();
+
+   
+	//	glColor3f(0.0,1.0,0.0);
+        glBegin(GL_POINTS);
+        int dx=X2-X1;
+        int dy=Y2-Y1;
+        
+        int Xk=X1;
+        int Yk=Y1;
+        glVertex2d(X1,Y1);
+        int* p = new int[dx+1];
+        p[0]=2*dy-dx;
+        for(int k=0;k<dx;k++){
+                if(p[k]>0){
+                        Xk=Xk+1;
+                        Yk=Yk+1;
+                        glVertex2d(Xk,Yk);
+						glColor3f(0.5,0.5,0.5);
+						glVertex2d(Xk-1,Yk);
+						glColor3f(1.0,0.0,0.0);
+                        p[k+1]=p[k]-2*dx+2*dy;
+
+                }
+                else{
+                        Xk=Xk+1;
+                        Yk=Yk;
+                        glVertex2d(Xk,Yk);
+						glColor3f(0.0,1.0,0.0);
+						glVertex2d(Xk,Yk-1);
+						glColor3f(1.0,0.0,0.0);
+                        p[k+1]=p[k]+2*dy;
+                }
+        }
+        glEnd();
+        glFlush();
+}
+
+void Init()
+{
+  glClearColor(1.0,1.0,1.0,1.0);
+ 
+  // Set fill color to black
+  glColor3f(0.0,0.0,0.0);
+   glViewport(-250 , -250 , 500 , 500);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+  gluOrtho2D(-250 , 250 , -250 , 250);
+;
+}
+
+void main(int argc, char **argv)
+{
+  printf("Enter two end points of the line to be drawn:\n");
+  printf("\n************************************");
+  printf("\nEnter Point1( X1 , Y1):\n");
+  scanf("%lf%lf",&X1,&Y1);
+  printf("\n************************************");
+  printf("\nEnter Point1( X2 , Y2):\n");
+  scanf("%lf%lf",&X2,&Y2);
+  
+  // Initialise GLUT library
+  glutInit(&argc,argv);
+  // Set the initial display mode
+  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+  // Set the initial window position and size
+  glutInitWindowPosition(0,0);
+  glutInitWindowSize(500,500);
+  // Create the window with title "DDA_Line"
+  glutCreateWindow("Line_Bresenham");
+  // Initialize drawing colors
+  Init();
+  // Call the displaying function
+  glutDisplayFunc(Line_Bresenham);
+  // Keep displaying untill the program is closed
+ //  glColor3f(1.0,0.0,0.0);
+   
+  glutMainLoop();
+}

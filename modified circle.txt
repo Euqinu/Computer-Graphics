@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <math.h>
+#include <GL/glut.h>
+#include <GL/glu.h>
+double X1, Y1, R, inc=0;
+
+void Circle(int r){
+        int x=0;
+        int y=r;
+        glBegin(GL_POINTS);
+        glVertex2d(X1+x, Y1+y);
+        glVertex2d(X1+y, Y1+x);
+        glVertex2d(X1+y, Y1-x);
+        glVertex2d(X1+x, Y1-y);
+        glVertex2d(X1-x, Y1-y);
+        glVertex2d(X1-y, Y1-x);
+        glVertex2d(X1-y, Y1+x);
+        glVertex2d(X1-x, Y1+y);
+        int pk=1-R;
+        
+        while(x<y){
+                if(pk<0){
+                        x=x+1;
+                        y=y;
+                        pk=pk+2*x+1;
+                        glVertex2d(X1+x, Y1+y);
+                        glVertex2d(X1+y, Y1+x);
+                        glVertex2d(X1+y, Y1-x);
+                        glVertex2d(X1+x, Y1-y);
+                        glVertex2d(X1-x, Y1-y);
+                        glVertex2d(X1-y, Y1-x);
+                        glVertex2d(X1-y, Y1+x);
+                        glVertex2d(X1-x, Y1+y);        
+                }
+                else{
+                        x=x+1;
+                        y=y-1;
+                        pk=pk+2*x+1-2*y;
+                        glVertex2d(X1+x, Y1+y);
+                        glVertex2d(X1+y, Y1+x);
+                        glVertex2d(X1+y, Y1-x);
+                        glVertex2d(X1+x, Y1-y);
+                        glVertex2d(X1-x, Y1-y);
+                        glVertex2d(X1-y, Y1-x);
+                        glVertex2d(X1-y, Y1+x);
+                        glVertex2d(X1-x, Y1+y);
+                }
+        }
+        glEnd();
+        glFlush();
+}
+
+void unplot(int r){
+                glColor3f(0,0,0);
+                int x=0;
+        int y=r;
+        glBegin(GL_POINTS);
+        glVertex2d(X1+x, Y1+y);
+        glVertex2d(X1+y, Y1+x);
+        glVertex2d(X1+y, Y1-x);
+        glVertex2d(X1+x, Y1-y);
+        glVertex2d(X1-x, Y1-y);
+        glVertex2d(X1-y, Y1-x);
+        glVertex2d(X1-y, Y1+x);
+        glVertex2d(X1-x, Y1+y);
+        int pk=1-R;
+        
+        while(x<y){
+                if(pk<0){
+                        x=x+1;
+                        y=y;
+                        pk=pk+2*x+1;
+                        glVertex2d(X1+x, Y1+y);
+                        glVertex2d(X1+y, Y1+x);
+                        glVertex2d(X1+y, Y1-x);
+                        glVertex2d(X1+x, Y1-y);
+                        glVertex2d(X1-x, Y1-y);
+                        glVertex2d(X1-y, Y1-x);
+                        glVertex2d(X1-y, Y1+x);
+                        glVertex2d(X1-x, Y1+y);        
+                }
+                else{
+                        x=x+1;
+                        y=y-1;
+                        pk=pk+2*x+1-2*y;
+                        glVertex2d(X1+x, Y1+y);
+                        glVertex2d(X1+y, Y1+x);
+                        glVertex2d(X1+y, Y1-x);
+                        glVertex2d(X1+x, Y1-y);
+                        glVertex2d(X1-x, Y1-y);
+                        glVertex2d(X1-y, Y1-x);
+                        glVertex2d(X1-y, Y1+x);
+                        glVertex2d(X1-x, Y1+y);
+                }
+        }
+        glEnd();
+        glFlush();
+        glColor3f(1,1,1);
+}
+void Circle_MiddlePoint(void){
+        
+        glClear(GL_COLOR_BUFFER_BIT);
+        int r=R;
+        int r1=r;
+        Circle(r1);
+        //Sleep(500);
+        int r2=r+5;
+        Circle(r2);
+        //Sleep(500);
+        int r3=r+10;
+        Circle(r3);
+        //Sleep(500);
+        for(int i=0;i<50;i++){
+                //unplot r1;
+                //plot r4
+                unplot(r1);
+                r1=r2;
+                r2=r3;
+                r3=r3+5;
+                Circle(r3);
+                Sleep(500);
+        }
+
+        
+        
+}
+
+void Init()
+{
+  // Set clear color to white
+  glClearColor(0.0,0.0,0.0,0);
+  // Set fill color to black
+  glColor3f(1.0,1.0,1.0);
+  // glViewport(0 , 0 , 640 , 480);
+  // glMatrixMode(GL_PROJECTION); 
+  // glLoadIdentity(); 
+  gluOrtho2D(-400 , 400 , -300 , 300);
+}
+
+void main(int argc, char **argv)
+{
+  
+  printf("Enter two end points of the line to be drawn:\n");
+  printf("\n************************************");
+  printf("\nEnter the centre of the circle( X1 , Y1):\n");
+  scanf("%lf%lf",&X1,&Y1);
+  printf("\n************************************");
+  printf("\nEnter the radius:\n");
+  scanf("%lf",&R);
+  
+  // Initialise GLUT library 
+  glutInit(&argc,argv);
+  // Set the initial display mode 
+  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+  // Set the initial window position and size 
+  glutInitWindowPosition(0,0);
+  glutInitWindowSize(800,600);
+  // Create the window with title "DDA_Line" 
+  glutCreateWindow("Circle Middle Point");
+  // Initialize drawing colors 
+  Init();
+  // Call the displaying function 
+  for(int i=0;i<3;i++){
+        glutDisplayFunc(Circle_MiddlePoint);
+        Sleep(500);
+  }
+  // Keep displaying untill the program is closed 
+  
+  glutMainLoop();
+}
